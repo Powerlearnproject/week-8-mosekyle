@@ -1,0 +1,122 @@
+## Part 1: SDG Selection and Problem Definition
+1. **SDG 3: Good Health and Well-being
+   - **Specific Problem**: Focus on "Access to affordable healthcare in rural areas."
+   - **Problem Definition**: In many rural areas, healthcare access is limited due to fewer facilities, long travel distances, and higher healthcare costs. By analyzing healthcare data, we can find out which areas lack clinics, which services are least available, and where improvements in healthcare infrastructure are most needed.
+
+## Part 2: Database Design
+#### Step 1: ERD (Entity Relationship Diagram)
+For the healthcare access problem, the following entities might be important:
+   - **Patients**: Stores information about patients.
+   - **Clinics**: Stores clinic information (location, services provided).
+   - **Health_Services**: Details the types of services (e.g., vaccinations, checkups, surgeries).
+   - **Visits**: Tracks visits by patients to clinics, including service type and cost.
+   
+#### simplified **ERD**:
+   - **Patients** (ID, Name, Age, Gender, Location)
+   - **Clinics** (ID, Name, Location)
+   - **Health_Services** (ID, Service_Type, Service_Cost)
+   - **Visits** (Visit_ID, Patient_ID, Clinic_ID, Service_ID, Date, Cost)
+
+#### Step 2: Create SQL Database Schema
+
+
+CREATE TABLE Patients (
+    Patient_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT,
+    Gender VARCHAR(10),
+    Location VARCHAR(100)
+);
+
+CREATE TABLE Clinics (
+    Clinic_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Location VARCHAR(100)
+);
+
+CREATE TABLE Health_Services (
+    Service_ID INT PRIMARY KEY,
+    Service_Type VARCHAR(50),
+    Service_Cost DECIMAL(10, 2)
+);
+
+CREATE TABLE Visits (
+    Visit_ID INT PRIMARY KEY,
+    Patient_ID INT,
+    Clinic_ID INT,
+    Service_ID INT,
+    Visit_Date DATE,
+    Cost DECIMAL(10, 2),
+    FOREIGN KEY (Patient_ID) REFERENCES Patients(Patient_ID),
+    FOREIGN KEY (Clinic_ID) REFERENCES Clinics(Clinic_ID),
+    FOREIGN KEY (Service_ID) REFERENCES Health_Services(Service_ID)
+);
+
+
+#### Step 3: Populate with Sample Data
+
+INSERT INTO Patients (Patient_ID, Name, Age, Gender, Location)
+VALUES (1, 'John Doe', 45, 'Male', 'Rural Area A'),
+       (2, 'Jane Smith', 29, 'Female', 'Rural Area B');
+
+INSERT INTO Clinics (Clinic_ID, Name, Location)
+VALUES (1, 'Clinic A', 'Rural Area A'),
+       (2, 'Clinic B', 'Rural Area B');
+
+INSERT INTO Health_Services (Service_ID, Service_Type, Service_Cost)
+VALUES (1, 'Vaccination', 50.00),
+       (2, 'Checkup', 30.00);
+
+INSERT INTO Visits (Visit_ID, Patient_ID, Clinic_ID, Service_ID, Visit_Date, Cost)
+VALUES (1, 1, 1, 1, '2023-03-15', 50.00),
+       (2, 2, 2, 2, '2023-03-17', 30.00);
+
+
+### Part 3: SQL Programming
+
+1. **Retrieve data**: 
+  
+   SELECT * FROM Patients WHERE Location = 'Rural Area A';
+   
+2. **Analyze data**: Find out the total cost of services provided in each clinic:
+   
+   SELECT Clinics.Name, SUM(Visits.Cost) AS Total_Cost
+   FROM Clinics
+   JOIN Visits ON Clinics.Clinic_ID = Visits.Clinic_ID
+   GROUP BY Clinics.Name;
+  
+### Part 4: Data Analysis Using Excel
+#### Step 1: Import Data into Excel
+1. Export SQL query results as CSV or directly import them into Excel using **Data > Get Data** from SQL Server or CSV file.
+
+#### Step 2: Perform Analysis
+1. **Bar Chart (Total Expenses by Category)**:
+   - Create a bar chart showing total expenses across categories services like vaccinations, checkups, etc.
+   
+2. **Line Graph (Monthly Income vs. Total Expenses)**:
+   - Plot the monthly income of patients against their total expenses using a line graph.
+
+3. **Pie Chart (Expense Distribution)**:
+   - Use Excel's built-in chart features to create a pie chart displaying the percentage distribution of expenses per service category.
+
+#### Step 3: Create an Interactive Dashboard
+1. Use **pivot tables** and **slicers** in Excel to create interactive filters.
+2. Add a **dropdown filter** for data filtering based on age, gender, or location.
+
+### Part 5: Integration and Testing
+1. Document imported the data and set up the Excel dashboard.
+2. Test all interactive features (filters, dropdowns) to ensure they are working as expected.
+
+### Part 6: Presentation (Pitch Deck)
+#### Create a 10-slide PowerPoint presentation:
+1. **Slide 1**: Title and Overview of the project.
+2. **Slide 2**: SDG alignment (why healthcare access is an issue in rural areas).
+3. **Slide 3**: Problem definition (limited access to affordable healthcare).
+4. **Slide 4**: Database design and ERD.
+5. **Slide 5**: SQL analysis (include the SQL queries).
+6. **Slide 6**: Dashboard demo (show interactive parts of the Excel dashboard).
+7. **Slide 7**: Key insights from the data (total expenses, services with most demand, etc.).
+8. **Slide 8**: Advanced analysis (expense-to-income ratio).
+9. **Slide 9**: What-If scenarios (e.g., increasing financial aid).
+10. **Slide 10**: Conclusion and future work.
+
